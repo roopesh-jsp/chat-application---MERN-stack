@@ -1,0 +1,42 @@
+.auth_page {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.auth_page_title {
+  text-align: center;
+  font-size: 30px;
+  padding-top: 30px;
+}
+
+.auth_page_body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(233, 233, 233);
+  width: 500px;
+  max-width: 60%;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 50px auto;
+}
+.tablist,
+.tabs {
+  width: 100%;
+}
+
+.auth_page_body .tab {
+  width: 50%;
+}
+
+form {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* form .input {
+  background-color: antiquewhite;
+  width: 100%;
+} */
