@@ -5,16 +5,33 @@ import {
   FormErrorMessage,
   Input,
   Button,
+  useToken,
 } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../store/authContext";
+// import { useToken } from "../store/authContext";
 
 export default function Signup() {
+  const { handleTokenAdd } = useContext(AuthContext);
+  const navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("hai");
     const formdata = new FormData(e.target);
-    const data = Object.fromEntries(formdata);
-    console.log(data);
+    const objectData = Object.fromEntries(formdata);
+    const res = await axios.post("http://localhost:3000/auth/register", {
+      ...objectData,
+    });
+    console.log(res.data);
+
+    if (res.data.success) {
+      console.log("registered");
+      handleTokenAdd(res.data.token);
+      navigate("/");
+    } else {
+      console.log(res.data.msg);
+    }
   }
   return (
     <div className="form">
@@ -53,7 +70,7 @@ export default function Signup() {
               outline={"1px solid black"}
               type="password"
               placeholder="confirm password"
-              name="confirm_password"
+              name="confirmPassword"
             />
           </FormControl>
           <Button mt={4} colorScheme="blue" type="submit">

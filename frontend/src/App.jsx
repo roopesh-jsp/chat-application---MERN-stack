@@ -4,6 +4,7 @@ import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import { ChakraBaseProvider, ChakraProvider } from "@chakra-ui/react";
+import AuthContextProvider from "./store/authContext";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,9 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <AuthContextProvider>
+        <RouterProvider router={router} />
+      </AuthContextProvider>
     </ChakraProvider>
   );
 }

@@ -5,11 +5,33 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../store/authContext";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { handleTokenAdd } = useContext(AuthContext);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formdata = new FormData(e.target);
+    const objectData = Object.fromEntries(formdata);
+    const res = await axios.post("http://localhost:3000/auth/login", {
+      ...objectData,
+    });
+    console.log(res.data);
+
+    if (res.data.success) {
+      console.log("logged");
+      handleTokenAdd(res.data.token);
+      navigate("/");
+    } else {
+      console.log(res.data.msg);
+    }
+  }
   return (
-    <div className="form">
+    <div className="form" onSubmit={handleSubmit}>
       <VStack>
         <form action="">
           <FormControl className="input" isRequired>

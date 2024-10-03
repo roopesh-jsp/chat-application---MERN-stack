@@ -2,6 +2,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user.model");
+// const { use } = require("../routes/auth.routes");
 
 const generateToken = async (id) => {
   const token = await jwt.sign({ id }, process.env.JWT_SECERT);
@@ -12,6 +13,10 @@ const generateToken = async (id) => {
 
 const register = async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
+  console.log(req.body);
+
+  console.log(name, email, password, confirmPassword);
+
   try {
     if (!email || !name || !password || !confirmPassword) {
       throw new Error("enter all fields");
@@ -35,8 +40,8 @@ const register = async (req, res) => {
       success: true,
       user: {
         ...user._doc,
-        token,
       },
+      token,
     });
   } catch (error) {
     console.log(error);
@@ -47,4 +52,35 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new Error("user not exists");
+    }
+
+    const isMatch = await bcryptjs.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error("wrong password");
+    }
+
+    const token = await generateToken(user._id);
+
+    res.json({
+      success: true,
+      token,
+      msg: "logged in",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};
+
+module.exports = { register, login };
