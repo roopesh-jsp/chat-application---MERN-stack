@@ -40,3 +40,13 @@ form {
   background-color: antiquewhite;
   width: 100%;
 } */
+
+.error_msg {
+  text-align: center;
+  color: rgb(225, 72, 72);
+  font-weight: 600;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  top: 20px;
+}

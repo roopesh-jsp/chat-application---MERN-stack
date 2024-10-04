@@ -5,15 +5,18 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 
 export default function Login() {
+  const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { handleTokenAdd } = useContext(AuthContext);
   async function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
     const formdata = new FormData(e.target);
     const objectData = Object.fromEntries(formdata);
@@ -27,8 +30,9 @@ export default function Login() {
       handleTokenAdd(res.data.token);
       navigate("/");
     } else {
-      console.log(res.data.msg);
+      setErrors(res.data.msg);
     }
+    setLoading(false);
   }
   return (
     <div className="form" onSubmit={handleSubmit}>
@@ -54,8 +58,9 @@ export default function Login() {
             />
           </FormControl>
 
-          <Button mt={4} colorScheme="blue" type="submit">
-            log in
+          {errors ? <h3 className="error_msg">{errors}</h3> : <></>}
+          <Button mt={4} colorScheme="blue" type="submit" isDisabled={loading}>
+            {loading ? "loading" : "log in"}
           </Button>
         </form>
       </VStack>

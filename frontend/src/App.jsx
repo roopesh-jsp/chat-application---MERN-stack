@@ -3,18 +3,30 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
-import { ChakraBaseProvider, ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import AuthContextProvider from "./store/authContext";
+import Protector from "./pages/Protector";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      { path: "/", element: <Home /> },
+      {
+        path: "/",
+        element: (
+          <Protector>
+            <Home />
+          </Protector>
+        ),
+      },
       {
         path: "/auth",
-        element: <Auth />,
+        element: (
+          <Protector>
+            <Auth />
+          </Protector>
+        ),
       },
     ],
   },

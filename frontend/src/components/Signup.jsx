@@ -8,15 +8,18 @@ import {
   useToken,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../store/authContext";
 // import { useToken } from "../store/authContext";
 
 export default function Signup() {
   const { handleTokenAdd } = useContext(AuthContext);
+  const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   async function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
     const formdata = new FormData(e.target);
     const objectData = Object.fromEntries(formdata);
@@ -29,9 +32,11 @@ export default function Signup() {
       console.log("registered");
       handleTokenAdd(res.data.token);
       navigate("/");
+      setErrors(null);
     } else {
-      console.log(res.data.msg);
+      setErrors(res.data.msg);
     }
+    setLoading(false);
   }
   return (
     <div className="form">
@@ -73,8 +78,9 @@ export default function Signup() {
               name="confirmPassword"
             />
           </FormControl>
-          <Button mt={4} colorScheme="blue" type="submit">
-            sign in
+          {errors ? <h3 className="error_msg">{errors}</h3> : <></>}
+          <Button mt={4} colorScheme="blue" type="submit" isDisabled={loading}>
+            {loading ? "loading" : "sign in"}
           </Button>
         </form>
       </VStack>
