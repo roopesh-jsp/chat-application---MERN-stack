@@ -83,4 +83,25 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const getUsers = async (req, res) => {
+  const searchTerm = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  console.log(req.user);
+
+  const users = await User.find(searchTerm).find({
+    _id: { $ne: req.user._id },
+  });
+  // console.log(users);
+
+  res.json({
+    users,
+  });
+};
+
+module.exports = { register, login, getUsers };
