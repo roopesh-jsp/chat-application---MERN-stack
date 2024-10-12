@@ -8,21 +8,30 @@ export const AuthContext = createContext({
 
 export default function AuthContextProvider({ children }) {
   const [token, setToken] = useState("");
-  function handleTokenAdd(tkn) {
+  const [user, setUser] = useState();
+  function handleTokenAdd(tkn, userData) {
+    const userData2 = JSON.parse(userData);
     setToken(tkn);
+    setUser(userData2);
     localStorage.setItem("token", tkn);
+    localStorage.setItem("user", userData);
   }
+
   function handleTokenRemone() {
     setToken(null);
+    setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
+      setUser(JSON.parse(localStorage.getItem("user")));
     }
   }, []);
   const ctxVal = {
     token,
+    user,
     handleTokenAdd,
     handleTokenRemone,
   };

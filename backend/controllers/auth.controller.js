@@ -73,6 +73,9 @@ const login = async (req, res) => {
       success: true,
       token,
       msg: "logged in",
+      user: {
+        ...user._doc,
+      },
     });
   } catch (error) {
     console.log(error);

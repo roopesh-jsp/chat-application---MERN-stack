@@ -27,7 +27,8 @@ export default function Login() {
 
     if (res.data.success) {
       console.log("logged");
-      handleTokenAdd(res.data.token);
+      const user = JSON.stringify(res.data.user);
+      handleTokenAdd(res.data.token, user);
       navigate("/");
     } else {
       setErrors(res.data.msg);
