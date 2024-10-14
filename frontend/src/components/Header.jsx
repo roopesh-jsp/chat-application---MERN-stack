@@ -29,10 +29,19 @@ export default function Header() {
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
 
-  const { handleTokenRemone, token, user } = useContext(AuthContext);
+  const [loadingChat, setLoadingChat] = useState(false);
+
+  const { handleTokenRemone, token, user, setSelectedChat, setChats } =
+    useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
+
+  function mdOnClose() {
+    setSearchTerm("");
+    setSearchResult([]);
+    onClose();
+  }
 
   async function handelSearch() {
     if (!searchTerm) {
@@ -61,6 +70,37 @@ export default function Header() {
       setSearchResult(data.users);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async function accessChat(userId) {
+    try {
+      setLoadingChat(true);
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `http://localhost:3000/chat/accessChat`,
+        { userId },
+        config
+      );
+      console.log(data.data);
+      setSelectedChat(data.data);
+      setLoadingChat(false);
+
+      mdOnClose();
+    } catch (error) {
+      toast({
+        title: error.message,
+        status: "error",
+        duration: 2000,
+        position: "top-left",
+        isClosable: true,
+      });
     }
   }
   return (
@@ -126,7 +166,7 @@ export default function Header() {
               <Button onClick={handelSearch}>GO</Button>
             </Box>
             {searchResult.map((user, idx) => (
-              <SearchResult key={idx} user={user} />
+              <SearchResult key={idx} user={user} accessChat={accessChat} />
             ))}
           </DrawerBody>
         </DrawerContent>

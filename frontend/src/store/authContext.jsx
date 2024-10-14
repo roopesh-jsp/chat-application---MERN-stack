@@ -4,11 +4,17 @@ export const AuthContext = createContext({
   token: "",
   handleTokenAdd: () => {},
   handleTokenRemone: () => {},
+  chats: [],
+  setChats: () => {},
+  setSelectedChat: () => {},
+  selectedChat: {},
 });
 
 export default function AuthContextProvider({ children }) {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
+  const [selectedChat, setSelectedChat] = useState({});
+  const [chats, setChats] = useState([]);
   function handleTokenAdd(tkn, userData) {
     const userData2 = JSON.parse(userData);
     setToken(tkn);
@@ -34,6 +40,10 @@ export default function AuthContextProvider({ children }) {
     user,
     handleTokenAdd,
     handleTokenRemone,
+    chats,
+    setChats,
+    selectedChat,
+    setSelectedChat,
   };
   return <AuthContext.Provider value={ctxVal}>{children}</AuthContext.Provider>;
 }

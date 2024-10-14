@@ -68,3 +68,35 @@ header {
   align-items: center;
   gap: 20px;
 }
+
+/** my chats **/
+.mychats {
+  padding: 20px;
+}
+.mychats_left {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+  gap: 10px;
+  width: 40%;
+  border-radius: 10px;
+  background-color: aliceblue;
+  min-height: 80vh;
+}
+.chat_list_item {
+  padding-left: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 10px;
+  cursor: pointer;
+}
+.chat_list_item:hover {
+  background-color: rgb(127, 161, 215);
+  color: black;
+}
+.active {
+  background-color: rgb(53, 181, 216);
+  color: white;
+}
