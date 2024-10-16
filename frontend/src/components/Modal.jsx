@@ -16,7 +16,7 @@ export function ModalComp({ user, children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button onClick={onOpen} width="full">
+      <Button onClick={onOpen} width="100pxS">
         {children}
       </Button>
 

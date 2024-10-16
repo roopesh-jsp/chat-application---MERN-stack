@@ -4,6 +4,7 @@ import axios from "axios";
 import { Box } from "@chakra-ui/react";
 import ChatListItem from "./ChatListItem";
 import { senderName } from "../config/chatsLogic";
+import MyChatsRight from "./MyChatsRight";
 
 export default function MyChats() {
   const { token, chats, setChats, user, selectedChat } =
@@ -32,6 +33,7 @@ export default function MyChats() {
   return (
     <div className="mychats">
       <div className="mychats_left">
+        <h1>my chats</h1>
         {chats ? (
           <>
             {chats.map((chat, idx) => (
@@ -42,9 +44,7 @@ export default function MyChats() {
           <></>
         )}
       </div>
-      <div className="mychats_right">
-        {/* {senderName(selectedChat?.users, user).email} */}
-      </div>
+      <MyChatsRight />
     </div>
   );
 }
