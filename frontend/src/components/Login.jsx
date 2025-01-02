@@ -1,70 +1,39 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../store/authContext";
+import React, { useState } from "react";
 
-export default function Login() {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { handleTokenAdd } = useContext(AuthContext);
+function Login() {
+  const [state, setState] = useState("login");
   async function handleSubmit(e) {
-    setLoading(true);
     e.preventDefault();
-    const formdata = new FormData(e.target);
-    const objectData = Object.fromEntries(formdata);
-    const res = await axios.post("http://localhost:3000/auth/login", {
-      ...objectData,
-    });
-    console.log(res.data);
-
-    if (res.data.success) {
-      console.log("logged");
-      const user = JSON.stringify(res.data.user);
-      handleTokenAdd(res.data.token, user);
-      navigate("/");
-    } else {
-      setErrors(res.data.msg);
-    }
-    setLoading(false);
+    const formData = new FormData(e.target);
+    const extractedData = Object.fromEntries(formData);
+    console.log(extractedData, state);
+    e.target.reset();
   }
   return (
-    <div className="form" onSubmit={handleSubmit}>
-      <VStack>
-        <form action="">
-          <FormControl className="input" isRequired>
-            <FormLabel>Email address</FormLabel>
-            <Input
-              outline={"1px solid black"}
-              type="email"
-              placeholder="email"
-              name="email"
-            />
-          </FormControl>
+    <div className="login">
+      <h1 className="login_heading">{state}</h1>
+      <form onSubmit={handleSubmit} className="login_form">
+        {state === "signup" && (
+          <input type="text" name="name" placeholder="name" />
+        )}
+        <input type="text" placeholder="email" name="email" />
+        <input type="password" name="password" placeholder="password" />
 
-          <FormControl isRequired>
-            <FormLabel>password</FormLabel>
-            <Input
-              outline={"1px solid black"}
-              type="password"
-              placeholder="password"
-              name="password"
-            />
-          </FormControl>
-
-          {errors ? <h3 className="error_msg">{errors}</h3> : <></>}
-          <Button mt={4} colorScheme="blue" type="submit" isDisabled={loading}>
-            {loading ? "loading" : "log in"}
-          </Button>
-        </form>
-      </VStack>
+        <button className="btn login_btn">{state}</button>
+        <span>
+          {state == "login" ? "didn't" : ""} have a account{" "}
+          <span
+            onClick={() =>
+              setState((prev) => (prev === "login" ? "signup" : "login"))
+            }
+            className="link"
+          >
+            click me
+          </span>
+        </span>
+      </form>
     </div>
   );
 }
+
+export default Login;

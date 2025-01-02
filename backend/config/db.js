@@ -1,14 +1,10 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const connectDb = async (req, res) => {
+export const connectDb = async () => {
   try {
-    const conn = await mongoose.connect(
-      "mongodb+srv://rupzkumar5:1234@mernchatapp.gqg8p.mongodb.net/?retryWrites=true&w=majority&appName=mernChatApp"
-    );
+    const conn = await mongoose.connect(process.env.MONGO_URL);
     console.log("db connected");
   } catch (error) {
     console.log(error);
   }
 };
-
-module.exports = connectDb;
