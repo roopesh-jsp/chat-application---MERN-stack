@@ -1,9 +1,16 @@
+:root {
+  --light-background: rgb(236, 236, 236);
+  --primary-color: rgb(74, 135, 228);
+  --border-color-1: rgb(114, 114, 196);
+  --primary-color-dark: rgb(38, 96, 183);
+}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
 }
+
 .login {
   margin: 80px auto;
   width: fit-content;
@@ -18,7 +25,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 30px;
-  background-color: rgb(236, 236, 236);
+  background-color: var(--light-background);
   width: 350px;
   border-radius: 10px;
 }
@@ -29,7 +36,7 @@
 }
 .login_form input:focus {
   outline: none;
-  border: 1px solid rgb(114, 114, 196);
+  border: 1px solid var(--border-color-1);
 }
 
 .btn {
@@ -46,10 +53,11 @@
   transition: all ease-in 0.2s;
 }
 .login_btn {
-  background-color: rgb(74, 135, 228);
+  background-color: var(--primary-color);
 }
 .login_btn:hover {
-  background-color: rgb(38, 96, 183);
+  /* background-color: rgb(38, 96, 183); */
+  background-color: var(--primary-color-dark);
 }
 
 .login_form span {
