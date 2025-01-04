@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 export const protect = async (req, res, nxt) => {
   let token;
-  console.log(req.headers.authorization);
 
   if (
     req.headers.authorization &&
@@ -11,7 +10,6 @@ export const protect = async (req, res, nxt) => {
     try {
       //extraticng token
       token = req.headers.authorization.split(" ")[1];
-      console.log(token);
 
       const decode = jwt.decode(token, process.env.JWT_SECRET);
 
