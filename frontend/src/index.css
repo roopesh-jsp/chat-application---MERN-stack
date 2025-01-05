@@ -72,3 +72,49 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+/* header  */
+.header {
+  display: flex;
+  background-color: antiquewhite;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+}
+.profile {
+  width: 100px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  background-color: aliceblue;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  top: 32px;
+
+  width: 100px;
+  display: none;
+}
+.dropdown span {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.profile:hover {
+  background-color: rgb(196, 196, 196);
+}
+.profile:hover .dropdown {
+  display: flex;
+}
+.dropdown span:hover {
+  background-color: rgb(89, 131, 215);
+}
