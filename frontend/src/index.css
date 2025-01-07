@@ -1,14 +1,16 @@
 :root {
-  --light-background: rgb(236, 236, 236);
-  --primary-color: rgb(74, 135, 228);
-  --border-color-1: rgb(114, 114, 196);
+  --light-background: #e4f9f5;
+  --primary-color: #7adbce;
+  --border-color-1: #11999e;
   --primary-color-dark: rgb(38, 96, 183);
+  --font-color: #40514e;
 }
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+  color: var(--font-color);
 }
 
 .login {
@@ -76,7 +78,7 @@
 /* header  */
 .header {
   display: flex;
-  background-color: antiquewhite;
+  background-color: var(--primary-color);
   align-items: center;
   justify-content: space-between;
   padding: 10px 30px;
@@ -117,4 +119,11 @@
 }
 .dropdown span:hover {
   background-color: rgb(89, 131, 215);
+}
+
+.profile_name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
 }

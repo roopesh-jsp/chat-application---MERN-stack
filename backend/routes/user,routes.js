@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getUserData,
   loginUser,
   searchUsers,
   userRegister,
@@ -14,5 +15,7 @@ userRouter.post("/register", userRegister);
 userRouter.post("/login", loginUser);
 
 userRouter.get("/users", protect, searchUsers);
+
+userRouter.get("/", protect, getUserData);
 
 export default userRouter;

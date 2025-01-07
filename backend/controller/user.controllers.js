@@ -125,4 +125,14 @@ const searchUsers = async (req, res) => {
   }
 };
 
-export { userRegister, loginUser, searchUsers };
+const getUserData = async (req, res) => {
+  try {
+    res.json({
+      message: true,
+      user: req.user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export { userRegister, loginUser, searchUsers, getUserData };

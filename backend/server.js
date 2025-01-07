@@ -3,11 +3,13 @@ import dotenv from "dotenv/config";
 import { connectDb } from "./config/db.js";
 import userRouter from "./routes/user,routes.js";
 import chatRoutes from "./routes/chats.routes.js";
+import cors from "cors";
 
 // creating express app
 const app = express();
 
 //middleware
+app.use(cors());
 app.use(express.json());
 
 //routes
