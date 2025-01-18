@@ -8,6 +8,7 @@ const acessChat = async (req, res) => {
     if (!userId) {
       throw new Error("no userId provided");
     }
+    const sender = await User.findById(userId);
 
     let chat = await Chat.findOne({
       isGroup: false,
@@ -25,7 +26,7 @@ const acessChat = async (req, res) => {
 
     if (!chat) {
       const newChat = new Chat({
-        chatName: "sender",
+        chatName: sender.name,
         users: [req.user._id, userId],
       });
 
@@ -71,8 +72,8 @@ const fetchChats = async (req, res) => {
 
 const createGroupChat = async (req, res) => {
   try {
-    const { chatName } = req.body;
-    let users = JSON.parse(req.body.users);
+    const { chatName, users } = req.body;
+    // let users = JSON.parse(req.body.users);
     if (!chatName || !users) {
       throw new Error("no chatName or users provided");
     }
@@ -178,11 +179,37 @@ const removeUserFromGroup = async (req, res) => {
     console.log(error);
   }
 };
+
+const getReciversData = async (req, res) => {
+  try {
+    const { chatId } = req.body;
+    const chat = await Chat.findById(chatId);
+
+    let reciverId = "";
+
+    chat.users.forEach((userId) => {
+      if (userId != req.user._id) {
+        reciverId = userId;
+      }
+    });
+
+    const reciver = await User.findById(reciverId);
+
+    res.json({ success: true, user: reciver });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 export {
   acessChat,
   fetchChats,
   createGroupChat,
   renameGroup,
   addUserToGroup,
+  getReciversData,
   removeUserFromGroup,
 };

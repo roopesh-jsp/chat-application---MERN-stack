@@ -4,6 +4,7 @@ import {
   addUserToGroup,
   createGroupChat,
   fetchChats,
+  getReciversData,
   removeUserFromGroup,
   renameGroup,
 } from "../controller/chats.controller.js";
@@ -23,5 +24,7 @@ chatRoutes.post("/rename", protect, renameGroup);
 chatRoutes.post("/add-users", protect, addUserToGroup);
 
 chatRoutes.post("/remove-user", protect, removeUserFromGroup);
+
+chatRoutes.post("/reciver-profile", protect, getReciversData);
 
 export default chatRoutes;
