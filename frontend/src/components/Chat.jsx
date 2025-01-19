@@ -39,7 +39,7 @@ function Chat() {
         //send req for one on one chat
         getReciverProfile(selectedChat._id);
       } else {
-        //send req for grp chat
+        //send req for grp chat (will finish later)
       }
 
       //fetch the selectedchats user data and set it
