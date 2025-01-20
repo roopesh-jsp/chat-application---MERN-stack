@@ -26,7 +26,7 @@ const acessChat = async (req, res) => {
 
     if (!chat) {
       const newChat = new Chat({
-        chatName: sender.name,
+        chatName: "sender",
         users: [req.user._id, userId],
       });
 

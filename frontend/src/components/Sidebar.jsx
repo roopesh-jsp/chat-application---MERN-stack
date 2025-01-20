@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useChatContext } from "../context/ChatProvider";
 import AddgroupModal from "./AddgroupModal";
+import { useAppContext } from "../context/AppProvider";
 
 function Sidebar() {
-  const { allChats, selectedChat, setSelectedChat } = useChatContext();
+  const { allChats, selectedChat, setSelectedChat, fetchChats } =
+    useChatContext();
+  const { user } = useAppContext();
 
   const [showAddgroup, setShowAddgroup] = useState(false);
   function toggleshowAddgroup() {
     setShowAddgroup((prev) => !prev);
   }
+  function findReciverName(users) {
+    if (user) {
+      return users[0]._id != user._id ? users[0].name : users[1].name;
+    }
+  }
+  useEffect(() => {
+    fetchChats();
+  }, []);
   return (
     <div id="sidebar">
       <div className="sidebar_head">
@@ -26,7 +37,7 @@ function Sidebar() {
             }`}
             onClick={() => setSelectedChat(chat)}
           >
-            {chat.chatName}
+            {chat.isGroup ? chat.chatName : findReciverName(chat.users)}
           </div>
         ))}
       </div>

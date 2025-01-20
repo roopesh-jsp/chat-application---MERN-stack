@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import SearchUser from "./SearchUser";
 import Profile from "./Profile";
+import { useChatContext } from "../context/ChatProvider";
 
 function Header() {
   const { setToken, user } = useAppContext();
+  const { setSelectedChat } = useChatContext();
 
   //set to toggle searching user modal
   const [showSearchUser, setShowSearchUser] = useState(false);
@@ -30,6 +32,7 @@ function Header() {
     setToken();
     localStorage.removeItem("token");
     navigate("/login");
+    setSelectedChat(null);
   }
   return (
     <header className="header">

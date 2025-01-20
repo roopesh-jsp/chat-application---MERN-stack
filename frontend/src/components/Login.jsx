@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAppContext } from "../context/AppProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useChatContext } from "../context/ChatProvider";
 
 function Login() {
   //creating state for login and signup
@@ -10,6 +11,7 @@ function Login() {
 
   //getting values from context
   const { backendUrl, setToken, token } = useAppContext();
+  const { setSelectedChat, fetchChats, setAllChats } = useChatContext();
 
   //creating navigation instance
   const navigate = useNavigate();
@@ -41,8 +43,6 @@ function Login() {
         extractedData
       );
 
-      console.log(data);
-
       // checking for error and success
       if (data.success) {
         //toast message
@@ -55,13 +55,42 @@ function Login() {
         //navigatinng user on success
         navigate("/");
         //reseting form
+        setAllChats([]);
+        fetchChats();
         e.target.reset();
       } else {
         //toast message
         toast.error(data.message);
       }
+      setSelectedChat(null);
     } else {
       //signup
+      console.log(extractedData);
+      const { data } = await axios.post(
+        backendUrl + "/user/register",
+        extractedData
+      );
+
+      // checking for error and success
+      if (data.success) {
+        //toast message
+        toast.success(data.message);
+
+        //storing token
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+
+        //navigatinng user on success
+        navigate("/");
+        setAllChats([]);
+        fetchChats();
+        //reseting form
+        e.target.reset();
+      } else {
+        //toast message
+        toast.error(data.message);
+      }
+      setSelectedChat(null);
     }
   }
 
