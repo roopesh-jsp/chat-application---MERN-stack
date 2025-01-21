@@ -9,12 +9,15 @@ const ChatContext = createContext({
   fetchChats: () => {},
   selectedChat: {},
   setSelectedChat: () => {},
+  notifications: [],
+  setNotifications: () => {},
 });
 
 function ChatProvider({ children }) {
   const { token } = useAppContext();
   const [allChats, setAllChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
+  const [notifications, setNotifications] = useState([]);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const fetchChats = async () => {
@@ -47,6 +50,8 @@ function ChatProvider({ children }) {
     setAllChats,
     selectedChat,
     setSelectedChat,
+    notifications,
+    setNotifications,
   };
   return <ChatContext.Provider value={ctxVal}>{children}</ChatContext.Provider>;
 }
