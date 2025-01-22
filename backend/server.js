@@ -7,25 +7,26 @@ import cors from "cors";
 import msgRouter from "./routes/message.routes.js";
 import { Server } from "socket.io";
 
-// creating express app
+// Express app setup
 const app = express();
 
-//middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-//routes
+// Routes
 app.use("/user", userRouter);
 app.use("/chats", chatRoutes);
 app.use("/message", msgRouter);
 
-//listing to server
+// Server setup
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
-  console.log("lisiting");
+  console.log("Server is running on port", PORT);
   connectDb();
 });
 
+// Socket.io setup
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
@@ -34,29 +35,28 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("connected io");
+  console.log("Socket.io connected", "io");
 
   socket.on("setup", (userData) => {
     socket.join(userData?._id);
-    console.log(userData?._id);
-
+    console.log("User joined room:", userData?._id);
     socket.emit("connected");
   });
 
   socket.on("chat-room", (room) => {
     socket.join(room);
-    console.log("user joined" + room);
+    console.log("User joined chat room: " + room);
   });
 
-  socket.on("new msg", (newMsgRecived) => {
-    let chat = newMsgRecived.chat;
+  socket.on("new msg", (newMsgReceived) => {
+    let chat = newMsgReceived.chat;
 
-    if (!chat.users) return console.log("user not defined");
+    if (!chat.users) return console.log("Chat users not defined");
 
     chat.users.forEach((user) => {
-      if (user._id == newMsgRecived.sender._id) return;
+      if (user._id == newMsgReceived.sender._id) return;
 
-      socket.in(user._id).emit("newMsgRecived", newMsgRecived);
+      socket.in(user._id).emit("newMsgRecived", newMsgReceived);
     });
   });
 });
