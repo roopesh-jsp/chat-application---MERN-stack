@@ -1,3 +1,4 @@
+import { Mongoose } from "mongoose";
 import { Chat } from "../models/chat.model.js";
 import { User } from "../models/user.model.js";
 
@@ -185,17 +186,36 @@ const getReciversData = async (req, res) => {
     const { chatId } = req.body;
     const chat = await Chat.findById(chatId);
 
-    let reciverId = "";
+    // const users = [];
 
-    chat.users.forEach((userId) => {
-      if (userId != req.user._id) {
-        reciverId = userId;
-      }
+    // let reciverId = "";
+
+    // chat.users.forEach((userId) => {
+    //   // console.log(userId, req.user);
+
+    //   if (userId.toString() != req.user._id.toString()) {
+    //     // console.log(userId, req.user._id);
+    //     reciverId = userId;
+    //   }
+    // });
+    const users = chat.users.filter(
+      (user) => user._id.toString() != req.user._id.toString()
+    );
+
+    // const reciver = await User.findById(reciverId);
+
+    // Assuming User is your Mongoose model
+    const userPromises = users.map(async (userId) => {
+      const foundUser = await User.findById(userId);
+      return foundUser;
     });
 
-    const reciver = await User.findById(reciverId);
+    // This will return an array of user objects
+    const foundUsers = await Promise.all(userPromises);
 
-    res.json({ success: true, user: reciver });
+    console.log(foundUsers);
+
+    res.json({ success: true, user: foundUsers });
   } catch (error) {
     console.log(error);
     res.json({
@@ -204,6 +224,8 @@ const getReciversData = async (req, res) => {
     });
   }
 };
+
+const getGroupData = async (req, res) => {};
 export {
   acessChat,
   fetchChats,

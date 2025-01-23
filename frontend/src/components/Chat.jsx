@@ -6,15 +6,17 @@ import axios from "axios";
 import { useAppContext } from "../context/AppProvider";
 import Messages from "./Messages";
 import io from "socket.io-client";
+import GroupProfile from "./GroupProfile";
 
 let selectedChatCompare;
 
 function Chat() {
   const { backendUrl, token, user } = useAppContext();
-  const { selectedChat, setNotifications, fetchChats } = useChatContext();
+  const { selectedChat, fetchChats } = useChatContext();
   const [showProfile, setShowProfile] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [messages, setMessages] = useState([]);
+  const [socketConn, setSocketConn] = useState(false);
 
   const socketRef = useRef(); // UseRef to persist socket instance
 
@@ -54,13 +56,15 @@ function Chat() {
     }
   }
 
-  async function getReceiverProfile(id) {
+  async function getReceiverProfile() {
     try {
       const { data } = await axios.post(
         `${backendUrl}/chats/reciver-profile`,
         { chatId: selectedChat._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      console.log(data);
 
       if (data.success) {
         setSelectedUser(data.user);
@@ -88,9 +92,10 @@ function Chat() {
   useEffect(() => {
     if (selectedChat) {
       if (!selectedChat.isGroup) {
-        getReceiverProfile(selectedChat._id);
+        // getReceiverProfile(selectedChat._id);
       }
       fetchMessages();
+      getReceiverProfile();
     }
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
@@ -102,10 +107,7 @@ function Chat() {
           !selectedChatCompare ||
           selectedChatCompare._id !== newmsgReceived.chat._id
         ) {
-          if (!notifications.includes(newmsgReceived)) {
-            setNotifications((prev) => [...prev, newmsgReceived]);
-            fetchChats();
-          }
+          //notification
         } else {
           setMessages((prev) => [...prev, newmsgReceived]);
         }
@@ -117,7 +119,7 @@ function Chat() {
         socketRef.current.off("newMsgRecived", messageListener);
       };
     }
-  }, [selectedChat, notifications, fetchChats]);
+  }, [selectedChat, fetchChats]);
 
   if (!selectedChat) {
     return (
@@ -141,13 +143,22 @@ function Chat() {
             ? selectedChat.chatName
             : findReceiverName(selectedChat.users)}
         </div>
-        <div className="chat_profile" onClick={() => setShowProfile(true)}>
-          <ViewIcon />
+        <div className="chat_profile" onClick={() => getReceiverProfile()}>
+          <ViewIcon onClick={() => setShowProfile(true)} />
           {showProfile && (
-            <Profile
-              user={selectedUser}
-              toggle={() => setShowProfile((prev) => !prev)}
-            />
+            <>
+              {selectedChat.isGroup ? (
+                <GroupProfile
+                  users={selectedUser}
+                  toggle={() => setShowProfile((prev) => !prev)}
+                />
+              ) : (
+                <Profile
+                  data={selectedUser.length === 0 ? {} : selectedUser[0]}
+                  toggle={() => setShowProfile((prev) => !prev)}
+                />
+              )}
+            </>
           )}
         </div>
       </div>

@@ -68,7 +68,7 @@ function Header() {
       ) : (
         <></>
       )}
-      {showProfile ? <Profile toggle={toggleProfile} user={user} /> : <></>}
+      {showProfile ? <Profile toggle={toggleProfile} data={user} /> : <></>}
     </header>
   );
 }

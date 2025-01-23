@@ -1,4 +1,3 @@
 1. css of chats
-2. group add remove and view icon
+2. group add remove 
 3.
-4. notifications
