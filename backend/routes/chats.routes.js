@@ -7,6 +7,7 @@ import {
   getReciversData,
   removeUserFromGroup,
   renameGroup,
+  updateGroupChat,
 } from "../controller/chats.controller.js";
 import { protect } from "../middleware/protect.js";
 
@@ -26,5 +27,7 @@ chatRoutes.post("/add-users", protect, addUserToGroup);
 chatRoutes.post("/remove-user", protect, removeUserFromGroup);
 
 chatRoutes.post("/reciver-profile", protect, getReciversData);
+
+chatRoutes.post("/update-group", protect, updateGroupChat);
 
 export default chatRoutes;

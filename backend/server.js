@@ -39,19 +39,19 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (userData) => {
     socket.join(userData?._id);
-    console.log("User joined room:", userData?._id);
+    // console.log("User joined room:", userData?._id);
     socket.emit("connected");
   });
 
   socket.on("chat-room", (room) => {
     socket.join(room);
-    console.log("User joined chat room: " + room);
+    // console.log("User joined chat room: " + room);
   });
 
   socket.on("new msg", (newMsgReceived) => {
     let chat = newMsgReceived.chat;
 
-    if (!chat.users) return console.log("Chat users not defined");
+    if (!chat?.users) return console.log("Chat users not defined");
 
     chat.users.forEach((user) => {
       if (user._id == newMsgReceived.sender._id) return;

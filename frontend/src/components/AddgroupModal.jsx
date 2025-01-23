@@ -10,15 +10,17 @@ import { data } from "react-router-dom";
 import Pill from "./Pill";
 import { useChatContext } from "../context/ChatProvider";
 
-function AddgroupModal({ toggle }) {
+function AddgroupModal({ toggle, isEdit, users }) {
   const { backendUrl, token } = useAppContext();
-  const { fetchChats } = useChatContext();
+  const { fetchChats, selectedChat } = useChatContext();
 
   const [searchTerm, setSearchterm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [chatName, setChatName] = useState("");
+  const [chatName, setChatName] = useState(
+    isEdit ? selectedChat?.chatName : ""
+  );
 
-  const [selectedUsers, setSelectedUser] = useState([]);
+  const [selectedUsers, setSelectedUser] = useState([...users]);
 
   async function searchUsers() {
     try {
@@ -31,7 +33,16 @@ function AddgroupModal({ toggle }) {
         }
       );
       if (data.success) {
-        setSearchResult(data.users);
+        let finalUsers = [];
+        if (isEdit) {
+          finalUsers = data.users.filter(
+            (us) => !users.some((existingUser) => existingUser._id === us._id)
+          );
+        } else {
+          finalUsers = data.users;
+        }
+        setSearchResult(finalUsers);
+        console.log(finalUsers);
       } else {
         toast.error(data.message);
       }
@@ -56,17 +67,33 @@ function AddgroupModal({ toggle }) {
       if (chatName.length === 0) {
         setChatName("un-named grp chat");
       }
-      const { data } = await axios.post(
-        backendUrl + "/chats/create-group",
-        {
-          chatName,
-          users: selectedUsers,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log(data);
+      let data;
+      if (isEdit) {
+        const res = await axios.post(
+          backendUrl + "/chats/update-group",
+          {
+            chatName,
+            chatId: selectedChat._id,
+            users: selectedUsers,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        data = res.data;
+      } else {
+        const res = await axios.post(
+          backendUrl + "/chats/create-group",
+          {
+            chatName,
+            users: selectedUsers,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        data = res.data;
+      }
       if (data.success) {
         toggle();
         setSearchResult([]);
@@ -99,7 +126,7 @@ function AddgroupModal({ toggle }) {
               onChange={(e) => setSearchterm(e.target.value)}
             />
             <button className="searchbar_btn" onClick={handleCreateGroup}>
-              add group
+              {isEdit ? "add users" : "add group"}
             </button>
           </div>
           <div className="pills">
@@ -123,14 +150,18 @@ function AddgroupModal({ toggle }) {
               </>
             ) : (
               <>
-                {" "}
-                {searchResult.map((result, idx) => (
-                  <SearchresultGroup
-                    key={idx}
-                    data={result}
-                    click={() => setSelectedUser((prev) => [...prev, result])}
-                  />
-                ))}
+                {searchResult
+                  .filter(
+                    (result) =>
+                      !selectedUsers.some((us) => us._id === result._id)
+                  )
+                  .map((result, idx) => (
+                    <SearchresultGroup
+                      key={idx}
+                      data={result}
+                      click={() => setSelectedUser((prev) => [...prev, result])}
+                    />
+                  ))}
               </>
             )}
           </div>

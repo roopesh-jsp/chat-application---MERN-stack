@@ -26,7 +26,15 @@ function Sidebar() {
         <button onClick={() => setShowAddgroup(true)} className="sidebar_btn">
           New group
         </button>
-        {showAddgroup ? <AddgroupModal toggle={toggleshowAddgroup} /> : <></>}
+        {showAddgroup ? (
+          <AddgroupModal
+            toggle={toggleshowAddgroup}
+            isEdit={false}
+            users={[]}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div className="sidebar_users">
         {allChats.map((chat, idx) => (

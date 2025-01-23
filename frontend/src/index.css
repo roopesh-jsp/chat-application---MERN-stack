@@ -258,7 +258,23 @@ body {
   width: 50px;
   border-radius: 50%;
 }
-
+.group_modal_header {
+  display: flex;
+  justify-content: flex-end;
+}
+.group_modal_header button {
+  width: 100px;
+  padding: 10px;
+  background-color: var(--font-color);
+  color: var(--light-background);
+  text-transform: capitalize;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  /* float: right; */
+}
 /* search bar  */
 .searchbar {
   width: 400px;

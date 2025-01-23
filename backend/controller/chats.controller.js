@@ -113,6 +113,50 @@ const createGroupChat = async (req, res) => {
   }
 };
 
+const updateGroupChat = async (req, res) => {
+  try {
+    const { chatId, chatName, users } = req.body;
+
+    if (!chatName || !users) {
+      throw new Error("no chatName or users provided");
+    }
+
+    if (users.length < 2) {
+      throw new Error("caant creat group with single user");
+    }
+
+    const chat = await Chat.findById(chatId).populate("groupAdmin");
+    console.log(chat.groupAdmin, req.user);
+
+    if (chat.groupAdmin._id.toString() !== req.user._id.toString()) {
+      throw new Error("unAuthorized access");
+    }
+    users.push(req.user._id);
+
+    const fullChat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        chatName,
+        users,
+      },
+      { new: true }
+    )
+      .populate("lastMessage")
+      .populate("groupAdmin");
+
+    res.json({
+      success: true,
+      chat: fullChat,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 const renameGroup = async (req, res) => {
   try {
     const { chatId, chatName } = req.body;
@@ -234,4 +278,5 @@ export {
   addUserToGroup,
   getReciversData,
   removeUserFromGroup,
+  updateGroupChat,
 };
