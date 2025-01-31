@@ -23,7 +23,7 @@ function Sidebar() {
   return (
     <div id="sidebar">
       <div className="sidebar_head">
-        <button onClick={() => setShowAddgroup(true)} className="sidebar_btn">
+        <button onClick={() => setShowAddgroup(true)} className="sidebar_btn ">
           New group
         </button>
         {showAddgroup ? (

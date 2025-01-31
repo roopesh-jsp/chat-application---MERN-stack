@@ -49,7 +49,7 @@ const sendMessage = async (req, res) => {
 const getAllMessage = async (req, res) => {
   try {
     const messages = await Message.find({ chat: req.params.chatId })
-      .populate("sender", "name pic email")
+      .populate("sender", "name image email ")
       .populate("chat");
 
     res.json({

@@ -14,10 +14,23 @@ function Messages({ messages }) {
               user._id === msg.sender._id ? "flex-end" : "flex-start",
           }}
         >
+          {msg.chat.isGroup && user._id !== msg.sender._id ? (
+            <div className="msg_user">
+              <div className="msg_user_img">
+                {console.log(msg.chat.isGroup)}
+                <img src={msg.sender.image} alt="" />
+              </div>
+              <div className="msg_user_name">{msg.sender.name}</div>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div
             className="msg"
             style={{
-              backgroundColor: user._id === msg.sender._id ? "red" : "green",
+              backgroundColor:
+                user._id === msg.sender._id ? "#DC143C" : "#018749",
             }}
           >
             {msg.content}

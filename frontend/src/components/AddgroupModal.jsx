@@ -125,7 +125,7 @@ function AddgroupModal({ toggle, isEdit, users }) {
               placeholder="serach ..."
               onChange={(e) => setSearchterm(e.target.value)}
             />
-            <button className="searchbar_btn" onClick={handleCreateGroup}>
+            <button className="searchbar_btn " onClick={handleCreateGroup}>
               {isEdit ? "add users" : "add group"}
             </button>
           </div>
