@@ -18,7 +18,7 @@ function GroupProfile({ users, toggle }) {
           <div className="gropu_modal">
             <div className="group_modal_header">
               {selectedChat.groupAdmin._id === user._id ? (
-                <button onClick={() => setIsAdding(true)}>add users</button>
+                <button onClick={() => setIsAdding(true)}>edit group</button>
               ) : (
                 <></>
               )}

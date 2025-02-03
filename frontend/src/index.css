@@ -288,7 +288,7 @@ body {
 
 .searchbar input {
   width: 100%;
-  padding: 8px 10px;
+  padding: 13px;
   background-color: #222831;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -390,8 +390,7 @@ body {
   font-size: 15px;
   cursor: pointer;
 }
-.searchbar_btn {
-}
+
 .sidebar_users {
   display: flex;
   flex-direction: column;
@@ -458,10 +457,14 @@ body {
   border: none;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  border: 1px solid var(--border-color-1);
+}
+#chat input::placeholder {
+  color: var(--font-color);
 }
 #chat input:focus {
   outline: none;
-  border: 1px solid var(--border-color-1);
+  border: 2px solid var(--border-color-1);
 }
 
 .sidebar_user_active {
@@ -524,9 +527,9 @@ body {
 }
 .pill {
   background-color: var(--font-color);
-  padding: 5px 10px;
+  padding: 10px;
   font-size: 11px;
-  border-radius: 10px;
+  border-radius: 20px;
   display: flex;
   gap: 15px;
   align-items: center;
@@ -534,9 +537,15 @@ body {
   justify-content: space-between;
 }
 .pill span {
-  /* padding: 5px; */
+  padding: 5px;
+  background-color: rgb(216, 69, 69);
+  width: 20px;
+  height: 20px;
+  text-align: center;
   border-radius: 50%;
   cursor: pointer;
+
+  opacity: 0.7;
 }
 .grp_search {
   display: flex;
@@ -552,11 +561,13 @@ body {
 .grp_search button {
   width: 100%;
   border: none;
+  margin: 10px 0;
   border-radius: 10px;
   text-transform: uppercase;
+  width: 300px;
   letter-spacing: 1px;
-  background-color: var(--border-color-1);
-  color: var(--light-background);
+  background-color: rgb(76, 152, 76);
+  /* color: var(--light-background); */
 }
 
 .grp_search:focus-within {
